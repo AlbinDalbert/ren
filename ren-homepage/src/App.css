@@ -1,0 +1,109 @@
+:root {
+    /* Primary Colors */
+    --color-primary-background: #270d06;
+    --color-primary-foreground: #ffcc66;
+
+    /* Normal Colors */
+    --color-black: #2d1200;
+    --color-red: #dd6600;
+    --color-green: #b3cc66;
+    --color-yellow: #ffcc00;
+    --color-blue: #6666bb;
+    --color-magenta: #cc99cc;
+    --color-cyan: #ffb84d;
+    --color-white: #fff2cc;
+
+    /* Bright Colors */
+    --color-bright-black: #4d2600;
+    --color-bright-red: #ff9933;
+    --color-bright-green: #e6ffb3;
+    --color-bright-yellow: #fff066;
+    --color-bright-blue: #b3e6ff;
+    --color-bright-magenta: #e6ccff;
+    --color-bright-cyan: #ffe5b4;
+    --color-bright-white: #ffffff;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+        'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+        sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: black;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+/* --- MEDIA QUERY for LANDSCAPE ORIENTATION (Wider screens like desktops) --- */
+@media (orientation: landscape) {
+    .container {
+        /* Override to side-by-side for landscape screens */
+        flex-direction: row;
+    }
+}
+
+.card {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 10px;
+    border-style: solid;
+    border-radius: 15px;
+    border-width: 5px;
+    border-color: #ffcc00;
+    color: white;
+    font-size: 1.4em;
+    text-align: center;
+
+    background-color: var(--color-primary-background); /* Fallback */
+}
+
+.albin-dalbert {
+    border-color: #ffcc00;
+
+    background-image: radial-gradient(circle, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+    background-size: 3px 3px; /* Smaller size for finer grain */
+    background-color: var(--color-primary-background); /* The base color */
+    
+    /* Ensure the color of the heading text is still visible */
+    color: var(--color-primary-foreground);
+}
+
+.albin-dalbert h1 {
+    color: var(--color-yellow);
+}
+
+.ninth-sentinel {
+    border-color: var(--color-yellow);
+    background-color: var(--color-primary-background);
+
+    background-image: 
+        /* 1. Subtle, almost-transparent horizontal stripes (the scanlines) */
+        linear-gradient(rgba(18, 5, 0, 0.4) 4px, transparent 0),
+        
+        /* 2. Base dark color, slightly lighter than primary background */
+        linear-gradient(90deg, #381208, #270d06); 
+        
+    background-size: 100% 8px; /* Line pattern repeats every 4 pixels vertically */
+    background-color: var(--color-primary-background); /* Fallback */
+}
+
+.ninth-sentinel h1 {
+    color: var(--color-yellow);
+}
