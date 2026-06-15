@@ -1,5 +1,7 @@
-import type { CSSProperties } from 'react'
+import { lazy, Suspense, type CSSProperties } from 'react'
 import './App.css'
+
+const ArchiveHomeDemo = lazy(() => import('./ArchiveHomeDemo'))
 
 const projects = [
   {
@@ -41,6 +43,16 @@ const stackLayers = [
 const notes = ['HTML stays readable.', 'Fractal keeps the graph.', 'Amanite edits the pages.']
 
 function App() {
+  const archiveDemoRequested = new URLSearchParams(window.location.search).get('demo') === 'archive'
+
+  if (archiveDemoRequested) {
+    return (
+      <Suspense fallback={<main className="site-shell" aria-label="Loading archive homepage demo" />}>
+        <ArchiveHomeDemo />
+      </Suspense>
+    )
+  }
+
   return (
     <main className="site-shell">
       <div className="ambient-grid" aria-hidden="true" />
