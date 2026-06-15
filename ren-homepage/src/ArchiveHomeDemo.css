@@ -645,6 +645,13 @@
   margin-bottom: 0;
 }
 
+.archive-footer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
 @keyframes archive-rise {
   from {
     opacity: 0;
@@ -676,6 +683,10 @@
   .archive-project-grid,
   .archive-principle-grid {
     grid-template-columns: 1fr;
+  }
+
+  .archive-footer-actions {
+    justify-content: flex-start;
   }
 }
 

@@ -62,6 +62,7 @@ function ArchiveHomeDemo() {
           <a href="#archive-projects">Projects</a>
           <a href="#archive-ledger">Ledger</a>
           <a href="#archive-principles">Principles</a>
+          <a href="?demo=archive-atlas">Variants</a>
           <a href="./">Demo 01</a>
         </nav>
       </header>
@@ -187,7 +188,10 @@ function ArchiveHomeDemo() {
           <h2 id="archive-footer-title">File demos, docs, releases, and notes here.</h2>
           <p>As Fractal and Amanite mature, this page can become a small public archive instead of a generic portfolio front.</p>
         </div>
-        <a className="archive-button archive-button-primary" href="./">Return to demo 01</a>
+        <div className="archive-footer-actions">
+          <a className="archive-button archive-button-primary" href="?demo=archive-atlas">View variants</a>
+          <a className="archive-button" href="./">Return to demo 01</a>
+        </div>
       </section>
     </main>
   )

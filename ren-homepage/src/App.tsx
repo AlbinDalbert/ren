@@ -2,6 +2,7 @@ import { lazy, Suspense, type CSSProperties } from 'react'
 import './App.css'
 
 const ArchiveHomeDemo = lazy(() => import('./ArchiveHomeDemo'))
+const ArchiveVariantDemos = lazy(() => import('./ArchiveVariantDemos'))
 
 const projects = [
   {
@@ -43,7 +44,17 @@ const stackLayers = [
 const notes = ['HTML stays readable.', 'Fractal keeps the graph.', 'Amanite edits the pages.']
 
 function App() {
-  const archiveDemoRequested = new URLSearchParams(window.location.search).get('demo') === 'archive'
+  const demo = new URLSearchParams(window.location.search).get('demo')
+  const archiveDemoRequested = demo === 'archive'
+  const archiveVariant = demo?.startsWith('archive-') ? demo.slice('archive-'.length) : null
+
+  if (archiveVariant) {
+    return (
+      <Suspense fallback={<main className="site-shell" aria-label="Loading archive homepage variant" />}>
+        <ArchiveVariantDemos variant={archiveVariant} />
+      </Suspense>
+    )
+  }
 
   if (archiveDemoRequested) {
     return (
