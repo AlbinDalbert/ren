@@ -1,14 +1,15 @@
-@import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;600;700;800&family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Chakra+Petch:wght@500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Azeret+Mono:wght@400;500;600;700;800;900&family=Barlow+Condensed:wght@500;600;700;800&family=Bricolage+Grotesque:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@500;600;700&display=swap');
 
 :root {
-  --font-display: 'Chakra Petch', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Barlow Condensed', ui-sans-serif, system-ui, sans-serif;
   --font-body: 'Bricolage Grotesque', ui-sans-serif, system-ui, sans-serif;
   --font-mono: 'Azeret Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-document: 'Cormorant Garamond', Georgia, serif;
   font-family: var(--font-body);
   line-height: 1.5;
   font-weight: 400;
-  color: #e9fff0;
-  background: #020403;
+  color: #e5e2e1;
+  background: #050505;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -21,24 +22,28 @@
 }
 
 html {
-  background: #020403;
+  background: #050505;
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
-  background: #020403;
+  background: #050505;
 }
 
 body::selection {
-  color: #021009;
-  background: #78ffae;
+  color: #130f08;
+  background: #ffd46d;
 }
 
 button,
 a {
   font: inherit;
+}
+
+button {
+  border-radius: 0;
 }
 
 a {
