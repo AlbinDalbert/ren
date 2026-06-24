@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import './App.css'
 
 const projectRecords = [
@@ -10,10 +10,14 @@ const projectRecords = [
     path: '~/projects/fractal',
     status: 'active',
     summary:
-      'Rust CLI/library for file-backed HTML projects: pages, metadata, notes, links, search, validation, and graph indexes.',
-    comparison: 'Engine layer: validates projects, builds indexes, syncs links, and keeps the folder readable without the app.',
+      'Rust engine for file-backed HTML projects: metadata, notes, links, validation, search, and graph indexes.',
+    comparison: 'Keeps the project readable without the app: plain files in, inspectable index out.',
     stats: ['Rust CLI', 'HTML pages', 'graph index'],
-    duties: ['Project format', 'Validation', 'Search index', 'Link graph'],
+    duties: ['Define project format', 'Validate pages', 'Build indexes', 'Map links'],
+    details: [
+      'Fractal is the foundation layer: it defines the project shape, reads and validates pages, and produces indexes other tools can trust.',
+      'The aim is boring durability. A project should stay legible as HTML and metadata first, with search and graph records as supporting artifacts instead of a proprietary vault.',
+    ],
   },
   {
     id: 'REN-002',
@@ -23,68 +27,95 @@ const projectRecords = [
     path: '~/apps/amanite',
     status: 'active',
     summary:
-      'Tauri/React editor for opening Fractal projects, writing pages, saving through the engine, and inspecting linked records.',
-    comparison: 'Interface layer: project browser, rich editor, graph-aware side panels, and a calm local writing surface.',
+      'Desktop editor for opening Fractal folders, writing pages, saving changes, and inspecting linked records.',
+    comparison: 'The calm working surface on top of the engine: local, graph-aware, and built for writing.',
     stats: ['Tauri app', 'rich editor', 'link inspector'],
     duties: ['Open projects', 'Edit pages', 'Save through engine', 'Inspect links'],
+    details: [
+      'Amanite is the working surface: open a Fractal folder, write pages, move through links, and see enough structure to know where you are.',
+      'It should feel like a desktop instrument over plain files, not a cloud workspace with an export button taped on at the end.',
+    ],
   },
 ]
 
-const stackLayers = [
-  {
-    label: '01',
-    title: 'Fractal',
-    meta: 'engine layer',
-    copy: 'Project format, validation, import/export, search, graph data, and the rules that keep local HTML useful.',
-  },
-  {
-    label: '02',
-    title: 'Amanite',
-    meta: 'interface layer',
-    copy: 'Project open/create, page editor, save flow, validation reports, and graph-aware working panels.',
-  },
-  {
-    label: '03',
-    title: 'Albin',
-    meta: 'operator layer',
-    copy: 'Building the stack, documenting the work, shipping experiments, and filing demos/releases in public.',
-  },
-]
-
-const commitments = [
-  ['001', 'Artifact', 'HTML remains readable on disk', 'sealed'],
-  ['002', 'Graph', 'Links and notes become inspectable project memory', 'active'],
-  ['003', 'Editor', 'Writing happens in a local desktop instrument', 'active'],
-  ['004', 'Site', 'Demos, releases, and field notes are filed here', 'draft'],
-]
-
-const notes = ['HTML stays readable.', 'Fractal keeps the graph.', 'Amanite edits the pages.']
-
-const contactRows = [
-  ['GitHub', 'github.com/AlbinDalbert', 'available'],
-  ['Docs', 'project notes and release logs', 'soon'],
-  ['Demos', 'Fractal / Amanite experiments', 'filing'],
+const footerLinks = [
+  ['GitHub', 'https://github.com/AlbinDalbert'],
+  ['Projects', '#projects'],
+  ['Top', '#top'],
 ]
 
 type ProjectRecord = (typeof projectRecords)[number]
 
-function LedgerTable() {
+function ProjectDetailModal({ project, onClose }: { project: ProjectRecord; onClose: () => void }) {
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        onClose()
+      }
+    }
+
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    window.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.body.style.overflow = previousOverflow
+      window.removeEventListener('keydown', handleKeyDown)
+    }
+  }, [onClose])
+
   return (
-    <div className="ledger-table" role="table" aria-label="Archive commitments">
-      <div className="ledger-table-row ledger-table-head" role="row">
-        <span role="columnheader">ID</span>
-        <span role="columnheader">Area</span>
-        <span role="columnheader">Commitment</span>
-        <span role="columnheader">State</span>
-      </div>
-      {commitments.map(([id, area, commitment, state]) => (
-        <div className="ledger-table-row" role="row" key={id}>
-          <span role="cell">{id}</span>
-          <span role="cell">{area}</span>
-          <span role="cell">{commitment}</span>
-          <span role="cell">{state}</span>
+    <div className="project-modal-backdrop" onClick={onClose}>
+      <article
+        className="project-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby={`project-modal-title-${project.id}`}
+        onClick={(event) => event.stopPropagation()}
+      >
+        <div className="project-modal-chrome">
+          <span>record: {project.id}</span>
+          <button type="button" onClick={onClose}>Close</button>
         </div>
-      ))}
+
+        <div className="project-modal-sheet">
+          <div className="project-modal-meta">
+            <span>{project.path}</span>
+            <span>{project.status}</span>
+          </div>
+
+          <p className="ledger-kicker">Project record</p>
+          <h2 id={`project-modal-title-${project.id}`}>{project.name}</h2>
+          <p className="project-modal-role">{project.layer} layer / {project.role}</p>
+
+          <div className="project-modal-copy">
+            {project.details.map((paragraph) => (
+              <p key={paragraph}>{paragraph}</p>
+            ))}
+          </div>
+
+          <div className="project-modal-grid">
+            <section>
+              <span>Purpose</span>
+              <p>{project.comparison}</p>
+            </section>
+            <section>
+              <span>Current duties</span>
+              <ul>
+                {project.duties.map((duty) => (
+                  <li key={duty}>{duty}</li>
+                ))}
+              </ul>
+            </section>
+          </div>
+
+          <ul className="project-modal-tags" aria-label={`${project.name} tags`}>
+            {project.stats.map((stat) => (
+              <li key={stat}>{stat}</li>
+            ))}
+          </ul>
+        </div>
+      </article>
     </div>
   )
 }
@@ -93,26 +124,27 @@ function LedgerApplicationContents({ project, titleId }: { project: ProjectRecor
   return (
     <>
       <div className="ledger-page-meta">
-        <span>path: {project.path}</span>
-        <span>status: {project.status}</span>
+        <span>{project.id}</span>
+        <span>{project.status}</span>
       </div>
 
-      <p className="ledger-kicker">Application ledger</p>
-      <h1 id={titleId}>{project.name} keeps the {project.layer} layer.</h1>
+      <p className="ledger-kicker">Application record</p>
+      <h1 id={titleId}>{project.name}</h1>
+      <p className="ledger-page-role">{project.layer} layer / {project.role}</p>
       <p>{project.summary}</p>
 
       <div className="ledger-app-details" aria-label={`${project.name} details`}>
         <div>
-          <span>record</span>
-          <strong>{project.id}</strong>
+          <span>path</span>
+          <strong>{project.path}</strong>
         </div>
         <div>
-          <span>layer</span>
+          <span>mode</span>
           <strong>{project.layer}</strong>
         </div>
         <div>
-          <span>artifact</span>
-          <strong>{project.path}</strong>
+          <span>state</span>
+          <strong>{project.status}</strong>
         </div>
       </div>
 
@@ -122,31 +154,54 @@ function LedgerApplicationContents({ project, titleId }: { project: ProjectRecor
         ))}
       </ul>
 
-      <div className="ledger-page-body-grid">
+      <div className="ledger-page-body-grid ledger-page-brief-grid">
         <section aria-label={`${project.name} purpose`}>
           <span>purpose</span>
           <p>{project.comparison}</p>
         </section>
         <section aria-label={`${project.name} duties`}>
-          <span>current duties</span>
+          <span>does</span>
           <ul>
-            {project.duties.map((duty) => (
+            {project.duties.slice(0, 3).map((duty) => (
               <li key={duty}>{duty}</li>
             ))}
           </ul>
         </section>
       </div>
 
-      <LedgerTable />
+      <div className="ledger-page-actions">
+        <a className="ledger-button ledger-button-on-paper" href="#projects">Inspect records</a>
+        <a
+          className="ledger-button ledger-button-on-paper ledger-button-on-paper-primary"
+          href="https://github.com/AlbinDalbert"
+          target="_blank"
+          rel="noreferrer"
+        >
+          GitHub
+        </a>
+      </div>
     </>
   )
 }
 
-function ProjectCards() {
+function ProjectCards({ onSelect }: { onSelect: (project: ProjectRecord) => void }) {
   return (
     <div className="ledger-records">
       {projectRecords.map((project) => (
-        <article className="ledger-record" key={project.id}>
+        <article
+          className="ledger-record ledger-record-clickable"
+          role="button"
+          tabIndex={0}
+          aria-label={`Open ${project.name} record`}
+          onClick={() => onSelect(project)}
+          onKeyDown={(event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault()
+              onSelect(project)
+            }
+          }}
+          key={project.id}
+        >
           <div className="ledger-record-top">
             <span>{project.id}</span>
             <strong>{project.status}</strong>
@@ -160,6 +215,7 @@ function ProjectCards() {
               <li key={stat}>{stat}</li>
             ))}
           </ul>
+          <span className="ledger-record-action">Open record</span>
         </article>
       ))}
     </div>
@@ -169,6 +225,7 @@ function ProjectCards() {
 function App() {
   const [activeProjectId, setActiveProjectId] = useState(projectRecords[0].id)
   const [ledgerClosed, setLedgerClosed] = useState(true)
+  const [selectedProject, setSelectedProject] = useState<ProjectRecord | null>(null)
   const activeProject = projectRecords.find((project) => project.id === activeProjectId) ?? projectRecords[0]
 
   return (
@@ -186,10 +243,8 @@ function App() {
 
         <nav className="ledger-nav" aria-label="Site sections">
           <a href="#projects">Projects</a>
-          <a href="#stack">Stack</a>
-          <a href="#commitments">Ledger</a>
           <a href="#about">About</a>
-          <a href="#contact">Contact</a>
+          <a href="https://github.com/AlbinDalbert" target="_blank" rel="noreferrer">GitHub</a>
         </nav>
       </header>
 
@@ -272,10 +327,6 @@ function App() {
                   </a>
                 </div>
               </article>
-
-              <div className="ledger-page ledger-cover-sizer" aria-hidden="true">
-                <LedgerApplicationContents project={activeProject} />
-              </div>
             </>
           ) : (
             <article
@@ -294,86 +345,59 @@ function App() {
       <section className="ledger-section" id="projects" aria-labelledby="projects-title">
         <div className="ledger-section-heading">
           <p className="ledger-kicker">Filed entries</p>
-          <h2 id="projects-title">Two projects. One local stack.</h2>
+          <h2 id="projects-title">Engine first. Interface second.</h2>
         </div>
-        <ProjectCards />
+        <ProjectCards onSelect={setSelectedProject} />
       </section>
 
-      <section className="ledger-section" id="stack" aria-labelledby="stack-title">
-        <div className="ledger-section-heading ledger-section-heading-wide">
-          <p className="ledger-kicker">Shape</p>
-          <h2 id="stack-title">Engine first. Interface second.</h2>
-        </div>
-
-        <div className="stack-ledger" aria-label="Stack layers">
-          {stackLayers.map((layer) => (
-            <article className="stack-ledger-card" key={layer.label}>
-              <span>{layer.label}</span>
-              <div>
-                <p>{layer.meta}</p>
-                <h3>{layer.title}</h3>
-              </div>
-              <p>{layer.copy}</p>
-            </article>
-          ))}
-        </div>
-      </section>
-
-      <section className="ledger-section ledger-split-section" id="commitments" aria-labelledby="commitments-title">
-        <div className="ledger-split-copy">
-          <p className="ledger-kicker">Ledger</p>
-          <h2 id="commitments-title">What the homepage should make obvious.</h2>
-          <p>
-            Less dashboard, more index: a clear map of what exists, what each project does, and where the durable work lives.
-          </p>
-        </div>
-        <LedgerTable />
-      </section>
-
-      <section className="ledger-section about-ledger-grid" id="about" aria-labelledby="about-title">
-        <article className="document-card">
-          <p className="ledger-kicker">About</p>
-          <h2 id="about-title">I build tools for linked pages and local knowledge graphs.</h2>
-          <p>
-            This is the home base for notes, releases, demos, and experiments around Fractal and Amanite. The durable artifact is a folder of pages; the graph is an index; the editor is only the instrument.
-          </p>
-        </article>
-
-        <aside className="note-ledger" aria-label="Project notes">
-          {notes.map((note, index) => (
-            <p key={note}>
-              <span>{String(index + 1).padStart(2, '0')}</span>
-              {note}
-            </p>
-          ))}
-        </aside>
-      </section>
-
-      <section className="ledger-section contact-ledger" id="contact" aria-labelledby="contact-title">
-        <div>
-          <p className="ledger-kicker">Contact</p>
-          <h2 id="contact-title">More records soon.</h2>
-          <p>Links, demos, docs, and releases can live here when they are ready.</p>
-        </div>
-
-        <div className="contact-register" aria-label="Contact and publication register">
-          {contactRows.map(([label, value, state]) => (
-            <div className="contact-row" key={label}>
-              <span>{label}</span>
-              <strong>{value}</strong>
-              <em>{state}</em>
+      <section className="ledger-section about-profile-section" id="about" aria-labelledby="about-title">
+        <article className="document-card about-profile-card">
+          <div className="about-profile-heading">
+            <div>
+              <p className="ledger-kicker">About</p>
+              <h2 id="about-title">Albin Dalbert</h2>
             </div>
-          ))}
-          <a
-            className="ledger-button ledger-button-primary"
-            href="https://github.com/AlbinDalbert"
-            target="_blank"
-            rel="noreferrer"
-          >
-            Open GitHub
-          </a>
-        </div>
+            <a
+              className="about-avatar"
+              href="https://github.com/AlbinDalbert"
+              target="_blank"
+              rel="noreferrer"
+              aria-label="Open Albin Dalbert on GitHub"
+            >
+              <img src="https://github.com/AlbinDalbert.png" alt="Albin Dalbert" loading="lazy" />
+            </a>
+          </div>
+
+          <div className="about-profile-body">
+            <p>
+              I build small systems for writing, archives, and personal knowledge. I care about tools that leave something durable behind: plain files, visible structure, and work that can still be inspected when the app is closed.
+            </p>
+            <p>
+              My taste sits somewhere between field terminal, document cabinet, and quiet desktop instrument. I like local-first software, calm interfaces, and projects where the artifact matters more than the chrome around it.
+            </p>
+          </div>
+        </article>
       </section>
+
+      <footer className="ledger-footer" aria-label="Footer">
+        <span className="ledger-footer-mark">REN / Albin Dalbert</span>
+        <nav aria-label="Footer links">
+          {footerLinks.map(([label, href]) => (
+            <a
+              href={href}
+              key={label}
+              target={href.startsWith('http') ? '_blank' : undefined}
+              rel={href.startsWith('http') ? 'noreferrer' : undefined}
+            >
+              {label}
+            </a>
+          ))}
+        </nav>
+      </footer>
+
+      {selectedProject && (
+        <ProjectDetailModal project={selectedProject} onClose={() => setSelectedProject(null)} />
+      )}
     </main>
   )
 }
