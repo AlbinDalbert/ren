@@ -1,0 +1,30 @@
+---
+import type { Project } from '../data/site'
+
+interface Props {
+  projects: Project[]
+  compact?: boolean
+}
+
+const { projects, compact = false } = Astro.props
+---
+
+<div class:list={['project-list', { compact }]}>
+  {projects.map((project) => (
+    <article class="project-row">
+      <div class="project-number" aria-hidden="true">{project.id}</div>
+      <div class="project-main">
+        <div class="project-heading">
+          <p class="eyebrow">{project.eyebrow}</p>
+          <span class="status"><i></i>{project.status}</span>
+        </div>
+        <h3>{project.name}</h3>
+        <p class="project-description">{project.description}</p>
+        {!compact && <p class="project-note">“{project.note}”</p>}
+      </div>
+      <ul class="tag-list" aria-label={`${project.name} technologies`}>
+        {project.tags.map((tag) => <li>{tag}</li>)}
+      </ul>
+    </article>
+  ))}
+</div>

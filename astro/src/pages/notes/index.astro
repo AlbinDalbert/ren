@@ -1,0 +1,43 @@
+---
+import { getCollection } from 'astro:content'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import NoteArchiveItem from '../../components/NoteArchiveItem.astro'
+
+const notes = (await getCollection('notes', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf())
+---
+
+<BaseLayout title="Notes" description="Notes about local-first software, durable tools, and works in progress.">
+  <section class="note-archive-shell" aria-labelledby="notes-title">
+    <header class="note-archive-intro">
+      <h1 id="notes-title">Notes</h1>
+      <p>{notes.length} pieces of writing. Select one to read it here.</p>
+    </header>
+
+    <div class="note-volumes">
+      {notes.map((note, index) => <NoteArchiveItem note={note} open={index === 0} />)}
+    </div>
+  </section>
+
+  <script>
+    const volumes = Array.from(document.querySelectorAll<HTMLDetailsElement>('.note-volume'))
+    const requested = window.location.hash.slice(1)
+    const requestedVolume = requested
+      ? volumes.find((volume) => volume.id === requested)
+      : undefined
+
+    if (requestedVolume) {
+      volumes.forEach((volume) => { volume.open = volume === requestedVolume })
+    }
+
+    volumes.forEach((volume) => {
+      volume.addEventListener('toggle', () => {
+        if (!volume.open) return
+        volumes.forEach((other) => {
+          if (other !== volume) other.open = false
+        })
+        history.replaceState(null, '', `#${volume.id}`)
+      })
+    })
+  </script>
+</BaseLayout>

@@ -1,0 +1,49 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import { capabilities, site } from '../data/site'
+---
+
+<BaseLayout title="About" description="About Albin Dalbert, a developer making local-first tools for writing and personal knowledge.">
+  <header class="page-intro page-grid">
+    <div class="margin-label"><span>About</span><span>AD—04</span></div>
+    <div>
+      <p class="eyebrow">Profile / working interests</p>
+      <h1>Albin<br /><em>Dalbert.</em></h1>
+      <p class="lede">Developer of small systems, keeper of too many plain-text files, and believer that software should leave something understandable behind.</p>
+    </div>
+  </header>
+
+  <section class="about-grid page-grid">
+    <div class="margin-label"><span>Profile</span><span>Short form</span></div>
+    <div class="about-copy prose">
+      <h2>A little context</h2>
+      <p>I build tools for writing, archives, and personal knowledge. Most of my current work circles around Fractal, a file-backed HTML knowledge engine, and Amanite, the desktop editor that sits on top of it.</p>
+      <p>I’m drawn to local-first software, visible structure, and projects where the artifact matters more than the chrome. My taste lives somewhere between a field terminal, a document cabinet, and a quiet desktop instrument.</p>
+      <p>This site is both a public index and a place to think in the open. It will change as the work does.</p>
+    </div>
+  </section>
+
+  <section class="section section-work page-grid" aria-labelledby="capabilities-title">
+    <div class="margin-label"><span>CV fragment</span><span>Current tools</span></div>
+    <div class="section-content">
+      <header class="section-header"><div><p class="eyebrow">Things I work with</p><h2 id="capabilities-title">Capabilities & interests</h2></div></header>
+      <dl class="capability-list">
+        {capabilities.map(([term, detail], index) => <div><dt><span>0{index + 1}</span>{term}</dt><dd>{detail}</dd></div>)}
+      </dl>
+      <p class="cv-note">A fuller chronological CV will be added here when it is ready.</p>
+    </div>
+  </section>
+
+  <section class="contact-block page-grid">
+    <div class="margin-label"><span>Contact</span><span>Open channel</span></div>
+    <div>
+      <p class="eyebrow">Elsewhere</p>
+      <h2>Find me on the quieter parts of the internet.</h2>
+      <div class="contact-links">
+        <a href={site.github} target="_blank" rel="noreferrer"><span>GitHub</span><strong>@AlbinDalbert</strong><i>↗</i></a>
+        <a href="/notes"><span>Writing</span><strong>Read the notes</strong><i>→</i></a>
+      </div>
+      <p class="contact-caveat">The email address is intentionally omitted until you add the one you want published.</p>
+    </div>
+  </section>
+</BaseLayout>

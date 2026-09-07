@@ -1,0 +1,38 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import ProjectList from '../components/ProjectList.astro'
+import { projects } from '../data/site'
+---
+
+<BaseLayout title="Work" description="Selected software projects by Albin Dalbert.">
+  <header class="page-intro page-grid">
+    <div class="margin-label"><span>Work</span><span>AD—02</span></div>
+    <div>
+      <p class="eyebrow">Selected projects / ongoing</p>
+      <h1>Tools with an<br /><em>afterlife.</em></h1>
+      <p class="lede">I care about software that respects the material beneath it: files you can inspect, structures you can understand, and work that remains yours.</p>
+    </div>
+  </header>
+
+  <section class="section section-work page-grid" aria-labelledby="projects-title">
+    <div class="margin-label"><span>Projects</span><span>{String(projects.length).padStart(2, '0')} entries</span></div>
+    <div class="section-content">
+      <h2 id="projects-title" class="visually-hidden">Projects</h2>
+      <ProjectList projects={projects} />
+    </div>
+  </section>
+
+  <section class="principles page-grid" aria-labelledby="principles-title">
+    <div class="margin-label"><span>Method</span><span>03 notes</span></div>
+    <div class="section-content">
+      <header class="section-header">
+        <div><p class="eyebrow">A working position</p><h2 id="principles-title">What matters underneath.</h2></div>
+      </header>
+      <ol class="principle-list">
+        <li><span>01</span><div><h3>The artifact comes first.</h3><p>A useful file should not become meaningless because its original application disappeared.</p></div></li>
+        <li><span>02</span><div><h3>Structure should be visible.</h3><p>Systems become easier to trust when their links, paths, and transformations can be inspected.</p></div></li>
+        <li><span>03</span><div><h3>Quiet is a feature.</h3><p>Good tools help the work take up more attention than the interface surrounding it.</p></div></li>
+      </ol>
+    </div>
+  </section>
+</BaseLayout>

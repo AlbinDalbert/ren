@@ -1,0 +1,83 @@
+---
+import { getCollection } from 'astro:content'
+import BaseLayout from '../layouts/BaseLayout.astro'
+import ProjectList from '../components/ProjectList.astro'
+import NoteList from '../components/NoteList.astro'
+import { projects } from '../data/site'
+
+const notes = (await getCollection('notes', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.published.valueOf() - a.data.published.valueOf())
+---
+
+<BaseLayout>
+  <section class="hero page-grid" aria-labelledby="intro-title">
+    <div class="margin-label" aria-hidden="true">
+      <span>Index</span>
+      <span>AD—01</span>
+    </div>
+
+    <div class="hero-copy">
+      <p class="eyebrow reveal">Developer · maker · archivist at heart</p>
+      <h1 id="intro-title" class="reveal reveal-delay-1">
+        I make tools for<br />
+        <em>thinking that lasts.</em>
+      </h1>
+      <p class="hero-intro reveal reveal-delay-2">
+        I’m Albin. I build small, local-first systems for writing, personal knowledge, and the durable web—software that leaves useful artifacts behind.
+      </p>
+      <div class="hero-actions reveal reveal-delay-3">
+        <a class="text-link text-link-primary" href="/work">See selected work <span>↗</span></a>
+        <a class="text-link" href="/about">A little about me <span>→</span></a>
+      </div>
+    </div>
+
+    <aside class="now-panel reveal reveal-delay-3" aria-label="Currently">
+      <div class="now-heading"><span class="signal-dot"></span> Now / 2026</div>
+      <p>Building <strong>Fractal</strong> and <strong>Amanite</strong>: a file-backed knowledge engine and the quiet editor around it.</p>
+      <a href="/work">Read the working notes →</a>
+    </aside>
+  </section>
+
+  <section class="section section-work page-grid" aria-labelledby="work-title">
+    <div class="margin-label">
+      <span>Selected work</span>
+      <span>02 entries</span>
+    </div>
+    <div class="section-content">
+      <header class="section-header">
+        <div>
+          <p class="eyebrow">Made to persist</p>
+          <h2 id="work-title">Current work</h2>
+        </div>
+        <a class="quiet-link" href="/work">All work →</a>
+      </header>
+      <ProjectList projects={projects} compact />
+    </div>
+  </section>
+
+  <section class="section section-notes page-grid" aria-labelledby="notes-title">
+    <div class="margin-label">
+      <span>Recent notes</span>
+      <span>Plain text</span>
+    </div>
+    <div class="section-content">
+      <header class="section-header">
+        <div>
+          <p class="eyebrow">From the notebook</p>
+          <h2 id="notes-title">Writing, occasionally.</h2>
+        </div>
+        <a class="quiet-link" href="/notes">All notes →</a>
+      </header>
+      <NoteList notes={notes} limit={3} />
+    </div>
+  </section>
+
+  <section class="closing-note page-grid">
+    <div class="margin-label"><span>Elsewhere</span><span>Open line</span></div>
+    <div class="closing-copy">
+      <h2>If something here feels familiar, say hello.</h2>
+      <p>I’m usually interested in thoughtful software, strange little tools, and better ways to keep our own work.</p>
+      <a class="text-link text-link-primary" href="https://github.com/AlbinDalbert" target="_blank" rel="noreferrer">Find me on GitHub <span>↗</span></a>
+    </div>
+  </section>
+</BaseLayout>

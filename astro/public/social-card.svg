@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#0b0a08"/>
+  <path d="M80 80h1040v470H80z" fill="none" stroke="#302b24" stroke-width="2"/>
+  <path d="M80 160h1040M210 80v470" stroke="#302b24" stroke-width="2"/>
+  <circle cx="145" cy="120" r="8" fill="#e8a830"/>
+  <text x="260" y="285" fill="#f4efe7" font-family="Arial, sans-serif" font-size="98" font-weight="700">Albin Dalbert</text>
+  <text x="265" y="355" fill="#9a9389" font-family="monospace" font-size="28" letter-spacing="5">DEVELOPER · MAKER · PERSONAL INDEX</text>
+  <text x="105" y="500" fill="#e8a830" font-family="monospace" font-size="23" letter-spacing="4">AD / 2026</text>
+</svg>
