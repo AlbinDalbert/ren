@@ -1,0 +1,32 @@
+---
+import noteSource from '../../../content/notes/durable-artifacts.md?raw'
+const source = noteSource.replace(/^---[\s\S]*?---\s*/, '').split('## What durability means')[0].trim()
+---
+<figure class="artifact">
+  <div class="artifact-toolbar"><span class="file-name"><svg width="13" height="16" viewBox="0 0 13 16" fill="none" aria-hidden="true"><path d="M1 1h7l4 4v10H1V1Z" stroke="currentColor"/><path d="M8 1v4h4M4 9h5M4 12h5" stroke="currentColor"/></svg> durable-artifacts.md</span><button type="button" class="source-toggle" aria-pressed="false" aria-controls="artifact-content">View source ↗</button></div>
+  <div class="artifact-paper" id="artifact-content">
+    <div class="artifact-reading">
+      <p class="paper-date">From the notebook · 18 May 2026</p>
+      <h2>The artifact<br />should outlive<br /><em>the tool.</em></h2>
+      <div class="paper-rule"></div>
+      <p>Most applications behave as if they are the permanent centre of your work.</p>
+      <p>I want to begin somewhere else: <strong>the artifact is the important part.</strong> The application is only one instrument for working with it.</p>
+      <a href="/notes/durable-artifacts/">Continue reading <span aria-hidden="true">↗</span></a>
+    </div>
+    <pre class="artifact-source" hidden><code>{source}</code></pre>
+  </div>
+  <!-- <figcaption><span>A plain file. A place to begin.s</span><span aria-hidden="true">.md → .html</span></figcaption> -->
+</figure>
+<script>
+  const button = document.querySelector<HTMLButtonElement>('.source-toggle')
+  const reading = document.querySelector<HTMLElement>('.artifact-reading')
+  const source = document.querySelector<HTMLElement>('.artifact-source')
+  button?.addEventListener('click', () => {
+    if (!reading || !source) return
+    const showSource = button.getAttribute('aria-pressed') !== 'true'
+    button.setAttribute('aria-pressed', String(showSource))
+    button.textContent = showSource ? 'Read document ↗' : 'View source ↗'
+    reading.hidden = showSource
+    source.hidden = !showSource
+  })
+</script>

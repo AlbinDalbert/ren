@@ -1,30 +1,17 @@
 ---
 import type { Project } from '../data/site'
-
-interface Props {
-  projects: Project[]
-  compact?: boolean
-}
-
+interface Props { projects: Project[]; compact?: boolean }
 const { projects, compact = false } = Astro.props
 ---
-
 <div class:list={['project-list', { compact }]}>
-  {projects.map((project) => (
-    <article class="project-row">
-      <div class="project-number" aria-hidden="true">{project.id}</div>
-      <div class="project-main">
-        <div class="project-heading">
-          <p class="eyebrow">{project.eyebrow}</p>
-          <span class="status"><i></i>{project.status}</span>
-        </div>
-        <h3>{project.name}</h3>
-        <p class="project-description">{project.description}</p>
-        {!compact && <p class="project-note">“{project.note}”</p>}
+  {projects.map(project => (
+    <article class="project-row" id={project.name.toLowerCase()}>
+      <div class="project-symbol" aria-hidden="true">
+        {project.name === 'Fractal' ? <svg viewBox="0 0 64 64" fill="none"><path d="M32 5 57 19v27L32 60 7 46V19L32 5Z M7 19l25 14 25-14M32 33v27M20 12l25 14v27M44 12 20 26v27" stroke="currentColor" stroke-width="1.2"/></svg> : <svg viewBox="0 0 64 64" fill="none"><path d="M9 29C10 14 21 7 32 7s22 7 23 22H9ZM26 29l-3 26h18l-3-26M15 29c5 7 29 7 34 0M32 8v15M20 12l4 11M44 12l-4 11" stroke="currentColor" stroke-width="1.2"/></svg>}
       </div>
-      <ul class="tag-list" aria-label={`${project.name} technologies`}>
-        {project.tags.map((tag) => <li>{tag}</li>)}
-      </ul>
+      <div class="project-title"><h3>{project.name}</h3><p>{project.eyebrow} <span> / {project.tags[0]}</span></p></div>
+      <div class="project-description"><p>{project.description}</p>{!compact && <p class="project-note">{project.note}</p>}</div>
+      <a class="project-arrow" href={compact ? `/work#${project.name.toLowerCase()}` : '/notes/fractal-and-amanite/'} aria-label={compact ? `More about ${project.name}` : `Read about ${project.name}`}>↗</a>
     </article>
   ))}
 </div>

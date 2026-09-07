@@ -1,7 +1,7 @@
 export const site = {
   name: 'Albin Dalbert',
   shortName: 'AD',
-  description: 'Developer building durable, local-first tools for writing, archives, and personal knowledge.',
+  description: 'Developer building durable, local-first tools for writing, and personal knowledge.',
   github: 'https://github.com/AlbinDalbert',
 }
 
@@ -22,7 +22,7 @@ export const projects: Project[] = [
     name: 'Fractal',
     eyebrow: 'Knowledge engine',
     description:
-      'A Rust engine for file-backed HTML projects: metadata, notes, links, validation, search, and graph indexes.',
+      'Link by default text project engine with HTML files as the base.',
     note: 'Plain files in. An inspectable index out.',
     tags: ['Rust', 'HTML', 'Local-first'],
     status: 'active',
@@ -32,7 +32,7 @@ export const projects: Project[] = [
     name: 'Amanite',
     eyebrow: 'Desktop editor',
     description:
-      'A calm desktop surface for opening Fractal folders, writing pages, saving changes, and following linked records.',
+      'A place to write. A desktop editor for Fractal, with your files always within reach.',
     note: 'The interface serves the artifact, not the other way around.',
     tags: ['Tauri', 'TypeScript', 'Editor'],
     status: 'active',
